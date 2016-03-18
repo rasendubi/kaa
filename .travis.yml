@@ -3,6 +3,7 @@ python: "3.4"
 sudo: required
 dist: trusty
 install:
+  - if test -z "$(git diff --name-only $TRAVIS_COMMIT_RANGE -- client/client-multi/client-c)"; then exit 0; fi
   - bash <(curl -sS https://nixos.org/nix/install)
   - source $HOME/.nix-profile/etc/profile.d/nix.sh
 
@@ -14,6 +15,7 @@ install:
   - cd ../../..
 
 script:
+  - if test -z "$(git diff --name-only $TRAVIS_COMMIT_RANGE -- client/client-multi/client-c)"; then exit 0; fi
   - cd client/client-multi/client-c
   - nix-shell --arg cc3200Support false --pure --run "make"
   - nix-shell --arg cc3200Support false --pure --run "./build.sh test"
