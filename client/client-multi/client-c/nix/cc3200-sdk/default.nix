@@ -34,6 +34,6 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/lib/cc3200-sdk
-    WINEPREFIX=$PWD/.wine xvfb-run wine ${src} --mode unattended --prefix $out/lib/cc3200-sdk/
+    WINEPREFIX=$PWD/.wine xvfb-run --auto-servernum --server-num=1 wine ${src} --mode unattended --prefix $out/lib/cc3200-sdk/
   '';
 }

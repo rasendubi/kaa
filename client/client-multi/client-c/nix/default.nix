@@ -19,6 +19,27 @@
 }:
 
 let
+  raspberrypiSystem = {
+    config = "armv6l-unknown-linux-gnueabi";
+    # config = "arm-linux-gnueabihf";
+    bigEndian = false;
+    arch = "arm";
+    float = "hard";
+    fpu = "vfp";
+    withTLS = true;
+    libc = "glibc";
+    platform = pkgs.platforms.raspberrypi;
+    openssl.system = "linux-generic32";
+    gcc = {
+      arch = "armv6";
+      fpu = "vfp";
+      float = "softfp";
+      abi = "aapcs-linux";
+    };
+  };
+
+  raspberrypiPkgs = import <nixpkgs> { crossSystem = raspberrypiSystem; };
+
   callPackage = pkgs.lib.callPackageWith (pkgs // self);
 
   self = rec {
@@ -28,9 +49,9 @@ let
 
     cc3200-sdk = callPackage ./cc3200-sdk { };
 
-    raspberrypi-tools = callPackage ./raspberrypi-tools { };
+    raspberrypi-tools = raspberrypiPkgs.gccCrossStageFinal;
 
-    raspberrypi-openssl = callPackage ./raspberrypi-openssl { };
+    raspberrypi-openssl = raspberrypiPkgs.openssl.crossDrv;
 
     # Currently, it causes compilation failure, so we use 4.7 for now.
     # gcc-arm-embedded = pkgs.callPackage_i686 ./gcc-arm-embedded {

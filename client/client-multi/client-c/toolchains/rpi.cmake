@@ -16,8 +16,8 @@
 
 set(CMAKE_SYSTEM_NAME Linux)
 
-set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
-set(CMAKE_CXX_COMPILER arm-linux-gnueabihf-g++)
+set(CMAKE_C_COMPILER armv6l-unknown-linux-gnueabi-gcc)
+set(CMAKE_CXX_COMPILER armv6l-unknown-linux-gnueabi-g++)
 
 #Set target environment directory
-set(CMAKE_FIND_ROOT_PATH  $ENV{INSTALLDIR}/arm-linux-gnueabihf/libc/usr)
+set(CMAKE_FIND_ROOT_PATH  $ENV{INSTALLDIR}/armv6l-unknown-linux-gnueabi/libc/usr)
