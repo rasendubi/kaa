@@ -23,6 +23,8 @@ args@
 , testSupport ? null
 , withWerror ? null
 , withTooling ? null
+# We need to override valgrind on Mac OS X
+, valgrind ? null
 }:
 
 let pkgs = import ../../../nix { };

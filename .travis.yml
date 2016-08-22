@@ -15,9 +15,15 @@
 #
 
 language: nix
+matrix:
+  include:
+    # - os: linux
+    - os: osx
+      env: KAA_C_SDK_NIX_OPTS="--arg raspberrypiSupport false --arg valgrind null"
 sudo: false
 install:
-  - cd client/client-multi/client-c/ && travis_retry nix-shell -Q --pure --run true --arg cc3200Support false && cd ../../..
+  - mkdir ~/.nixpkgs && echo '{ allowBroken = true; }' > ~/.nixpkgs/config.nix
+  - cd client/client-multi/client-c/ && travis_retry nix-shell -Q --pure --show-trace --run true $KAA_C_SDK_NIX_OPTS --arg cc3200Support false && cd ../../..
   - cd client/client-multi/client-cpp/ && travis_retry nix-shell -Q --pure --run true && cd ../../..
   - travis_retry nix-shell -Q --packages pkgs.maven --pure --run true
 
@@ -25,7 +31,7 @@ script:
   - nix-shell --pure --packages pkgs.maven --run 'mvn -q apache-rat:check'
 
   - cd client/client-multi/client-c
-  - nix-shell --arg cc3200Support false --pure --run ./scripts/build.sh
+  - nix-shell $KAA_C_SDK_NIX_OPTS --arg cc3200Support false --pure --run ./scripts/build.sh
   - cd ../../..
 
   - cd client/client-multi/client-cpp
